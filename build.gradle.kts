@@ -4,6 +4,7 @@ plugins {
     id("ploceus")
 
     id("dev.kikugie.j52j") version "2.0"
+    id("com.gradleup.shadow") version "9.0.0-rc1"
     // id("me.modmuss50.mod-publish-plugin")
 }
 
@@ -88,7 +89,15 @@ tasks {
     }
 
     var outDir = rootProject.layout.buildDirectory.dir("libs")
+    shadowJar {
+        dependencies {
+            exclude { !it.allModuleArtifacts.any() { p -> p.name.startsWith("ears-") } }
+        }
+    }
+
     remapJar {
+        input.set(shadowJar.get().archiveFile)
+        dependsOn(shadowJar)
         destinationDirectory = outDir
     }
 

@@ -14,5 +14,10 @@
     "SkinImageProcessorMixin",
     //? if >=1.9
     /*"ElytraLayerMixin"*/
-  ]
+  ],
+  //either stonecutter is not happy with this
+  //or ploceus is not happy with this,
+  //so enjoy this amazing bruteforce method
+  //i came up with after an hour of raging
+  "refmap": "ornitheears-refmap.json"
 }
