@@ -87,6 +87,15 @@ tasks {
         filesMatching("fabric.mod.json") { expand(props) }
     }
 
+    var outDir = rootProject.layout.buildDirectory.dir("libs")
+    remapJar {
+        destinationDirectory = outDir
+    }
+
+    remapSourcesJar {
+        destinationDirectory = outDir
+    }
+
     // Builds the version into a shared folder in `build/libs/${mod version}/`
     register<Copy>("buildAndCollect") {
         group = "build"
