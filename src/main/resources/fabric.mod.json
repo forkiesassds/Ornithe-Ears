@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "version": "${version}",
+  "name": "${name}",
+  "description": "An implementation of Ears for OrnitheMC.",
+  "authors": [
+    "icanttellyou"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.icanttellyou.ornitheears.OrnitheEars"
+    ]
+  },
+  "mixins": [
+    "ornitheears.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16",
+    "minecraft": "${minecraft}"
+  }
+}
