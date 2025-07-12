@@ -3,7 +3,6 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven("https://maven.fabricmc.net/")
-        maven("https://maven.kikugie.dev/releases") { name = "KikuGie Releases" }
         maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie Snapshots" }
         maven("https://maven.ornithemc.net/releases") { name = "Ornithe Releases" }
         maven("https://maven.ornithemc.net/snapshots") { name = "Ornithe Snapshots" }

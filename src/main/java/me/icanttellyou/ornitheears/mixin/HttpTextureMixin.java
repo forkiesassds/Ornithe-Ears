@@ -3,6 +3,7 @@ package me.icanttellyou.ornitheears.mixin;
 import com.unascribed.ears.common.EarsFeaturesParser;
 import com.unascribed.ears.common.debug.EarsLog;
 import com.unascribed.ears.common.util.EarsStorage;
+import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.icanttellyou.ornitheears.OrnitheEars;
 import net.minecraft.client.render.texture.HttpTexture;
 import net.minecraft.client.render.texture.Texture;
@@ -22,6 +23,7 @@ import me.icanttellyou.ornitheears.NativeImageAdapter;
 import com.unascribed.ears.common.render.AbstractEarsRenderDelegate;
 *///?}
 
+@MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(HttpTexture.class)
 public abstract class HttpTextureMixin {
     @Inject(method = "setImage", at = @At("HEAD"))

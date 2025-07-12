@@ -1,6 +1,7 @@
 package me.icanttellyou.ornitheears.mixin;
 
 import com.unascribed.ears.common.debug.EarsLog;
+import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.icanttellyou.ornitheears.EarsLayer;
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(PlayerRenderer.class)
 public abstract class PlayerRendererMixin extends LivingEntityRenderer<ClientPlayerEntity> {
     public PlayerRendererMixin(EntityRenderDispatcher dispatcher, Model model, float shadowSize) {

@@ -3,7 +3,9 @@ plugins {
     id("fabric-loom")
     id("ploceus")
 
-    id("dev.kikugie.j52j") version "2.0"
+    kotlin("jvm") version "2.2.0"
+    id("com.google.devtools.ksp") version "2.2.0-2.0.2"
+    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.12"
     id("com.gradleup.shadow") version "9.0.0-rc1"
     // id("me.modmuss50.mod-publish-plugin")
 }
@@ -67,8 +69,14 @@ loom {
 
 java {
     withSourcesJar()
-    targetCompatibility = JavaVersion.VERSION_1_8
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+fletchingTable {
+    mixins.register("main") {
+        mixin(alias = "default", file = "ornitheears.mixins.json")
+    }
 }
 
 tasks {

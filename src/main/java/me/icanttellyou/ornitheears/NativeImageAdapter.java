@@ -4,7 +4,10 @@
 import com.mojang.blaze3d.platform.NativeImage;
 import com.unascribed.ears.common.SwappedEarsImage;
 import com.unascribed.ears.common.WritableEarsImage;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
+@Environment(EnvType.CLIENT)
 public class NativeImageAdapter extends SwappedEarsImage {
     private final NativeImage img;
 

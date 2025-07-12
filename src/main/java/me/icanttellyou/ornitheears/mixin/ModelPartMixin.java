@@ -3,6 +3,7 @@ package me.icanttellyou.ornitheears.mixin;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.unascribed.ears.common.util.EarsStorage;
+import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.icanttellyou.ornitheears.OrnitheEars;
 import net.minecraft.client.render.model.ModelPart;
 import org.lwjgl.opengl.GL11;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(ModelPart.class)
 public abstract class ModelPartMixin {
     @Inject(method = "render", at = @At("HEAD"))

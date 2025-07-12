@@ -2,6 +2,7 @@
 /*package me.icanttellyou.ornitheears.mixin;
 
 import com.unascribed.ears.common.EarsCommon;
+import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.icanttellyou.ornitheears.OrnitheEars;
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
 import net.minecraft.client.render.entity.layer.ElytraLayer;
@@ -10,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(ElytraLayer.class)
 public abstract class ElytraLayerMixin {
     @Inject(method =

@@ -2,6 +2,7 @@ package me.icanttellyou.ornitheears.mixin;
 
 import com.unascribed.ears.common.EarsCommon;
 import com.unascribed.ears.common.debug.EarsLog;
+import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.render.texture.SkinImageProcessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.awt.image.BufferedImage;
 //?}
 
+@MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(SkinImageProcessor.class)
 public abstract class SkinImageProcessorMixin {
     @Unique private static boolean ears$reentering;
