@@ -44,13 +44,16 @@ dependencies {
 
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
 
-    implementation("com.unascribed:ears-api:${property("deps.ears")}")
 
     val target =
         if (hasProperty("deps.ears.target")) ":" + property("deps.ears.target")
         else ""
 
     implementation("com.unascribed:ears-common:${property("deps.ears")}${target}")
+
+    if (target.isEmpty()) {
+        implementation("com.unascribed:ears-api:${property("deps.ears")}")
+    }
 
     ploceus.dependOsl(property("deps.osl").toString())
 }
