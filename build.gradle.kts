@@ -38,20 +38,18 @@ dependencies {
     if (hasProperty("deps.raven"))
         exceptions(ploceus.raven(property("deps.raven").toString()))
     if (hasProperty("deps.sparrow"))
-        signatures(ploceus.raven(property("deps.sparrow").toString()))
+        signatures(ploceus.sparrow(property("deps.sparrow").toString()))
     if (hasProperty("deps.nests"))
-        nests(ploceus.raven(property("deps.nests").toString()))
+        nests(ploceus.nests(property("deps.nests").toString()))
 
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
 
-
-    val target =
-        if (hasProperty("deps.ears.target")) ":" + property("deps.ears.target")
-        else ""
-
-    implementation("com.unascribed:ears-common:${property("deps.ears")}${target}")
-
-    if (target.isEmpty()) {
+    if (hasProperty("deps.ears.target")) {
+        property("deps.ears.target").toString().split(",").forEach {
+            implementation("com.unascribed:ears-common:${property("deps.ears")}:${it}")
+        }
+    } else {
+        implementation("com.unascribed:ears-common:${property("deps.ears")}")
         implementation("com.unascribed:ears-api:${property("deps.ears")}")
     }
 
@@ -74,6 +72,56 @@ java {
     withSourcesJar()
     targetCompatibility = JavaVersion.VERSION_17
     sourceCompatibility = JavaVersion.VERSION_17
+}
+
+stonecutter {
+    replacements.string {
+        direction = eval(current.version, "<1.8")
+        replace("net.minecraft.resource.Identifier", "net.minecraft.client.resource.Identifier")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.8")
+        replace("GlStateManager.bindTexture(", "GL11.glBindTexture(GL11.GL_TEXTURE_2D, ")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.8")
+        replace("GlStateManager.enableBlend()", "GL11.glEnable(GL11.GL_BLEND)")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.8")
+        replace("GlStateManager.disableBlend()", "GL11.glDisable(GL11.GL_BLEND)")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.8")
+        replace("GlStateManager.translate", "GL11.glTranslate")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.8")
+        replace("GlStateManager.rotate", "GL11.glRotate")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.8")
+        replace("GlStateManager.scale", "GL11.glScale")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.8")
+        replace("GlStateManager.blendFunc", "GL11.glBlendFunc")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.8")
+        replace(
+            "Tessellator.getInstance().end()",
+            "BufferBuilder.INSTANCE.end()"
+        )
+    }
 }
 
 fletchingTable {

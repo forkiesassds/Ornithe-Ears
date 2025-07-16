@@ -1,11 +1,12 @@
 package me.icanttellyou.ornitheears;
 
 import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+//? if >=1.8 {
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tessellator;
+//?}
 import com.unascribed.ears.api.features.EarsFeatures;
 import com.unascribed.ears.common.EarsCommon;
 import com.unascribed.ears.common.EarsFeaturesStorage;
@@ -14,17 +15,14 @@ import com.unascribed.ears.common.render.DirectEarsRenderDelegate;
 import com.unascribed.ears.common.render.EarsRenderDelegate;
 import com.unascribed.ears.common.render.EarsRenderDelegate.BodyPart;
 import com.unascribed.ears.common.util.Decider;
-import me.icanttellyou.ornitheears.mixin.PlayerModelAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.layer.EntityRenderLayer;
 import net.minecraft.client.render.model.Box;
 import net.minecraft.client.render.model.ModelPart;
-import net.minecraft.client.render.model.PlayerModelPart;
-import net.minecraft.client.render.model.entity.PlayerModel;
+import net.minecraft.client.render.model.entity.HumanoidModel;
 import net.minecraft.client.render.texture.DynamicTexture;
 import net.minecraft.client.render.texture.Texture;
 import net.minecraft.item.ArmorItem;
@@ -32,12 +30,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Identifier;
 import org.lwjgl.opengl.GL11;
 
-import javax.imageio.ImageIO;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+
 @Environment(EnvType.CLIENT)
-public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
+public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.entity.layer.EntityRenderLayer<ClientPlayerEntity> /*?}*/ {
     private final LivingEntityRenderer<ClientPlayerEntity> render;
     private float tickDelta;
 
@@ -46,19 +43,26 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
         EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "Constructed");
     }
 
+    //? if >=1.8 {
     @Override
     public void render(ClientPlayerEntity entity, float limbAngle, float limbDistance,
                               float tickDelta, float age, float headYaw, float headPitch, float scale) {
         EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "render({}, {}, {}, {}, {}, {}, {}, {}, {})", entity, limbAngle, limbDistance, tickDelta, age, headYaw, headPitch, scale);
+    //?} else {
+    /*public void render(ClientPlayerEntity entity, float limbDistance, float tickDelta) {
+        EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "render({}, {}, {})", entity, limbDistance, tickDelta);
+    *///?}
         this.tickDelta = tickDelta;
         delegate.render(entity, null);
     }
 
+    //? if >=1.8 {
     public void renderLeftArm(ClientPlayerEntity entity) {
         EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "renderLeftArm({})", entity);
         this.tickDelta = 0;
         delegate.render(entity, BodyPart.LEFT_ARM);
     }
+    //?}
 
     public void renderRightArm(ClientPlayerEntity entity) {
         EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "renderRightArm({})", entity);
@@ -66,12 +70,15 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
         delegate.render(entity, BodyPart.RIGHT_ARM);
     }
 
+    //? if >=1.8 {
     @Override
     public boolean colorsWhenDamaged() {
         return true;
     }
+    //?}
 
-    private final DirectEarsRenderDelegate<ClientPlayerEntity, ModelPart> delegate = new DirectEarsRenderDelegate<ClientPlayerEntity, ModelPart>() {
+    private final DirectEarsRenderDelegate<ClientPlayerEntity, ModelPart> delegate = /*? if >=1.8 {*/ new DirectEarsRenderDelegate<>() /*?} else {*/ /*new com.unascribed.ears.common.legacy.PartiallyUnmanagedEarsRenderDelegate<>() *//*?}*/ {
+        //? if >=1.8 {
         @Override
         protected void setUpRenderState() {
             GlStateManager.enableCull();
@@ -86,10 +93,16 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
             GlStateManager.disableRescaleNormal();
             GlStateManager.disableCull();
         }
+        //?}
 
         @Override
         protected Decider<EarsRenderDelegate.BodyPart, ModelPart> decideModelPart(Decider<EarsRenderDelegate.BodyPart, ModelPart> d) {
-            PlayerModel model = (PlayerModel) render.getModel();
+            HumanoidModel model =
+                    //? if >=1.8 {
+                    (HumanoidModel) render.getModel();
+                     //?} else {
+                    /*(HumanoidModel) ((me.icanttellyou.ornitheears.mixin.LivingEntityRendererAccessor) render).getModel();
+                    *///?}
             return d.map(BodyPart.HEAD, model.head)
                     .map(BodyPart.LEFT_ARM, model.leftArm)
                     .map(BodyPart.LEFT_LEG, model.leftArm)
@@ -130,9 +143,14 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
 
         @Override
         public boolean isSlim() {
-            return ((PlayerModelAccessor) render.getModel()).getThinArms();
+            //? if >=1.8 {
+            return ((me.icanttellyou.ornitheears.mixin.PlayerModelAccessor) render.getModel()).getThinArms();
+             //?} else {
+            /*return ((PlayerModel) ((me.icanttellyou.ornitheears.mixin.LivingEntityRendererAccessor) render).getModel()).thinArms;
+            *///?}
         }
 
+        //? if >=1.8 {
         @Override
         protected void pushMatrix() {
             GlStateManager.pushMatrix();
@@ -142,7 +160,7 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
         protected void popMatrix() {
             GlStateManager.popMatrix();
         }
-
+        //?}
 
         @Override
         protected void doBindSkin() {
@@ -161,16 +179,16 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
                         Minecraft.getInstance().getTextureManager().register(id,
                                 //? if >=1.13 {
                                 /*new DynamicTexture(com.mojang.blaze3d.platform.NativeImage.read(toNativeBuffer(pngData)))
-                                *///?} else {
-                                new DynamicTexture(ImageIO.read(new ByteArrayInputStream(pngData)))
+                                 *///?} else {
+                                new DynamicTexture(javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(pngData)))
                                 //?}
                         );
                     } catch (IOException e) {
                         Minecraft.getInstance().getTextureManager().register(id,
                                 //? if >=1.13 {
                                 /*net.minecraft.unmapped.C_9812125.m_8862353()
-                                *///?} else {
-                                TextureUtil.MISSING_TEXTURE
+                                 *///?} else {
+                                com.mojang.blaze3d.platform.TextureUtil.MISSING_TEXTURE
                                 //?}
                         );
                     }
@@ -179,6 +197,7 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
             }
         }
 
+        //? if >=1.8 {
         @Override
         protected void doTranslate(float x, float y, float z) {
             GlStateManager.translatef(x, y, z);
@@ -193,20 +212,33 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
         protected void doScale(float x, float y, float z) {
             GlStateManager.scalef(x, y, z);
         }
+        //?}
 
         @Override
         protected void beginQuad() {
+            //? if >=1.8 {
             Tessellator.getInstance().getBuilder().begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL);
+             //?} else {
+            /*BufferBuilder.INSTANCE.start(GL11.GL_QUADS);
+            *///?}
         }
 
         @Override
         protected void addVertex(float x, float y, int z, float r, float g, float b, float a, float u, float v, float nX, float nY, float nZ) {
+            //? if >=1.8 {
             Tessellator.getInstance().getBuilder().vertex(x, y, z).texture(u, v).color(r, g, b, a).normal(nX, nY, nZ).nextVertex();
+             //?} else {
+            /*BufferBuilder bb = BufferBuilder.INSTANCE;
+            bb.color(r, g, b, a);
+            bb.normal(nX, nY, nZ);
+            bb.vertex(x, y, z, u, v);
+            *///?}
         }
 
         @Override
         public void setEmissive(boolean emissive) {
             super.setEmissive(emissive);
+            //? if >=1.8 {
             GlStateManager.activeTexture(GLX.GL_TEXTURE1);
             if (emissive) {
                 GlStateManager.disableLighting();
@@ -216,13 +248,24 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
                 GlStateManager.enableTexture();
             }
             GlStateManager.activeTexture(GLX.GL_TEXTURE0);
+            //?} else {
+            /*GLX.activeTexture(GLX.GL_TEXTURE1);
+            if (emissive) {
+               GL11.glDisable(GL11.GL_TEXTURE_2D);
+            } else {
+               GL11.glEnable(GL11.GL_TEXTURE_2D);
+            }
+            GLX.activeTexture(GLX.GL_TEXTURE0);
+            *///?}
         }
+
 
         @Override
         protected void drawQuad() {
             Tessellator.getInstance().end();
         }
 
+        //? if >=1.8 {
         @Override
         protected void doRenderDebugDot(float r, float g, float b, float a) {
             GL11.glPointSize(8);
@@ -233,10 +276,11 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
             Tessellator.getInstance().end();
             GlStateManager.enableTexture();
         }
+        //?}
 
         @Override
         public float getTime() {
-            return peer.time+tickDelta;
+            return peer.time + tickDelta;
         }
 
         @Override
@@ -251,7 +295,11 @@ public class EarsLayer implements EntityRenderLayer<ClientPlayerEntity> {
 
         @Override
         public boolean isJacketEnabled() {
-            return peer.isModelPartVisible(PlayerModelPart.JACKET);
+            //? if >=1.8 {
+            return peer.isModelPartVisible(net.minecraft.client.render.model.PlayerModelPart.JACKET);
+             //?} else {
+            /*return true;
+            *///?}
         }
 
         @Override

@@ -1,6 +1,7 @@
 //? if <1.9 {
 package me.icanttellyou.ornitheears.mixin;
 
+//? if >=1.8
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.unascribed.ears.common.util.EarsStorage;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(ModelPart.class)
