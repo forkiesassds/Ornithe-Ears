@@ -84,8 +84,13 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<ClientPla
 
     @Unique
     private void ears$beforeRenderModel(PlayerEntity entity) {
+        //? if >=1.7 {
         com.unascribed.ears.legacy.LegacyHelper.ensureLookedUpAsynchronously(entity.getGameProfile().getId(), entity.getGameProfile().getName());
         boolean slim = com.unascribed.ears.legacy.LegacyHelper.isSlimArms(entity.getGameProfile().getId());
+        //?} else {
+        /^com.unascribed.ears.legacy.LegacyHelper.ensureLookedUpAsynchronously(entity.getName());
+        boolean slim = com.unascribed.ears.legacy.LegacyHelper.isSlimArms(entity.getName());
+        ^///?}
 
         if (slim) {
             this.model = ears$slimModel;

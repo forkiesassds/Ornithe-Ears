@@ -27,7 +27,7 @@ public class OrnitheEars implements ClientModInitializer {
         Texture tex = Minecraft.getInstance().getTextureManager().get(skin);
         if (earsSkinFeatures.containsKey(tex)) {
             EarsFeatures feat = earsSkinFeatures.get(tex);
-            EarsFeaturesStorage.INSTANCE.put(peer.getGameProfile().getName(), peer.getGameProfile().getId(), feat);
+            EarsFeaturesStorage.INSTANCE.put(/*? if >=1.7 {*/ peer.getGameProfile().getName(), peer.getGameProfile().getId() /*?} else {*/ /*peer.getName(), null *//*?}*/, feat);
             if (!peer.isInvisible()) {
                 return feat;
             }
