@@ -30,16 +30,16 @@ public class PlayerModel extends HumanoidModel {
         if (thinArms) {
             this.leftArm = new ModelPart(this, 32, 48);
             this.leftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, reduction);
-            this.leftArm.setPivot(5.0F, 2.5F, 0.0F);
+            this.leftArm.setPivot(5.0F, 2.0F, 0.0F);
             this.rightArm = new ModelPart(this, 40, 16);
             this.rightArm.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, reduction);
-            this.rightArm.setPivot(-5.0F, 2.5F, 0.0F);
+            this.rightArm.setPivot(-5.0F, 2.0F, 0.0F);
             this.leftSleeve = new ModelPart(this, 48, 48);
             this.leftSleeve.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, reduction + 0.25F);
-            this.leftSleeve.setPivot(5.0F, 2.5F, 0.0F);
+            this.leftSleeve.setPivot(5.0F, 2.0F, 0.0F);
             this.rightSleeve = new ModelPart(this, 40, 32);
             this.rightSleeve.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, reduction + 0.25F);
-            this.rightSleeve.setPivot(-5.0F, 2.5F, 10.0F);
+            this.rightSleeve.setPivot(-5.0F, 2.0F, 10.0F);
         } else {
             this.leftArm = new ModelPart(this, 32, 48);
             this.leftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, reduction);
