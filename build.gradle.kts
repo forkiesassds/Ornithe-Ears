@@ -1,3 +1,5 @@
+import net.ornithemc.ploceus.api.GameSide
+
 plugins {
     `maven-publish`
     id("fabric-loom")
@@ -13,6 +15,19 @@ plugins {
 version = "${property("mod.version")}+${stonecutter.current.version}"
 group = property("mod.group") as String
 base.archivesName = property("mod.id") as String
+
+val useClient = stonecutter.eval(stonecutter.current.version, "<=1.3-alpha.12.17.a")
+
+if (useClient) {
+    loom {
+        clientOnlyMinecraftJar()
+    }
+
+    ploceus {
+        @Suppress("DEPRECATION")
+        clientOnlyMappings()
+    }
+}
 
 repositories {
     /**
@@ -53,7 +68,8 @@ dependencies {
         implementation("com.unascribed:ears-api:${property("deps.ears")}")
     }
 
-    ploceus.dependOsl(property("deps.osl").toString())
+    ploceus.dependOsl(property("deps.osl").toString(),
+        if (useClient) GameSide.CLIENT else GameSide.MERGED)
 }
 
 loom {

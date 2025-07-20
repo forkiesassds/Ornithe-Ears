@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 
-//? if <1.7 {
+//? if <1.7.6 {
 /*import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Mutable;
@@ -35,7 +35,7 @@ import com.unascribed.ears.common.render.AbstractEarsRenderDelegate;
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(HttpTexture.class)
 public abstract class HttpTextureMixin {
-    //? if <1.7 {
+    //? if <1.7.6 {
     /*@Mutable
     @Shadow @Final private String url;
 

@@ -149,14 +149,14 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
             *///?}
             if (OrnitheEars.earsSkinFeatures.containsKey(tex)) {
                 EarsFeatures feat = OrnitheEars.earsSkinFeatures.get(tex);
-                //? if >=1.7 {
+                //? if >=1.7.6 {
                 String name = peer.getGameProfile().getName();
                 //?} else if >= 1.5 {
                 /*String name = peer.getName();
                 *///?} else {
                 /*String name = peer.name;
                 *///?}
-                EarsFeaturesStorage.INSTANCE.put(name, /*? if >=1.7 {*/ peer.getGameProfile().getId() /*?} else {*/ /*null *//*?}*/, feat);
+                EarsFeaturesStorage.INSTANCE.put(name, /*? if >=1.7.6 {*/ peer.getGameProfile().getId() /*?} else {*/ /*null *//*?}*/, feat);
                 //? if >=1.4 {
                 if (!peer.isInvisible()) {
                     return feat;
