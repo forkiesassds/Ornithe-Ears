@@ -21,7 +21,6 @@ import net.minecraft.entity.living.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Shadow;
 *///?}
 
-
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 //? if >=1.8 {
 @Mixin(net.minecraft.client.render.entity.PlayerRenderer.class)

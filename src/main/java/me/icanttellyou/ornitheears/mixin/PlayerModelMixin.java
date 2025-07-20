@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(PlayerModel.class)
 public abstract class PlayerModelMixin {

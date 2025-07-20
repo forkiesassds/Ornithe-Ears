@@ -22,7 +22,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 
-
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(targets = "net/minecraft/client/render/texture/HttpTexture$1")
 public abstract class HttpTextureThreadMixin {

@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(HeldItemRenderer.class)
 public abstract class HeldItemRendererMixin {

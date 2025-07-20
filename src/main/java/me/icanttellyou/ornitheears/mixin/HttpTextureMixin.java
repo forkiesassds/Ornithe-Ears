@@ -32,7 +32,6 @@ import me.icanttellyou.ornitheears.NativeImageAdapter;
 import com.unascribed.ears.common.render.AbstractEarsRenderDelegate;
 *///?}
 
-
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(HttpTexture.class)
 public abstract class HttpTextureMixin {

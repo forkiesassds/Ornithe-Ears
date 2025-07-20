@@ -27,7 +27,6 @@ import java.awt.image.DataBufferInt;
 *///?}
 //?}
 
-
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 @Mixin(SkinImageProcessor.class)
 public abstract class SkinImageProcessorMixin {
