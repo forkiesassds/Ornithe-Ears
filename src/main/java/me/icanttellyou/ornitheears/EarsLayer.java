@@ -23,22 +23,27 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.model.Box;
 import net.minecraft.client.render.model.ModelPart;
 import net.minecraft.client.render.model.entity.HumanoidModel;
-import net.minecraft.client.render.texture.DynamicTexture;
-import net.minecraft.client.render.texture.Texture;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.resource.Identifier;
 import org.lwjgl.opengl.GL11;
 
-import java.io.IOException;
+//? if >=1.6 {
+import net.minecraft.client.render.texture.DynamicTexture;
+import net.minecraft.resource.Identifier;
 
+import java.io.IOException;
+//?} else {
+/*import net.minecraft.client.render.texture.TextureManager;
+
+import java.awt.image.BufferedImage;
+*///?}
 
 @Environment(EnvType.CLIENT)
 public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.entity.layer.EntityRenderLayer<ClientPlayerEntity> /*?}*/ {
-    private final LivingEntityRenderer<ClientPlayerEntity> render;
+    private final LivingEntityRenderer/*? if >=1.6 {*/<ClientPlayerEntity>/*?}*/ render;
     private float tickDelta;
 
-    public EarsLayer(LivingEntityRenderer<ClientPlayerEntity> render) {
+    public EarsLayer(LivingEntityRenderer/*? if >=1.6 {*/<ClientPlayerEntity>/*?}*/ render) {
         this.render = render;
         EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "Constructed");
     }
@@ -77,7 +82,14 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
     }
     //?}
 
-    private final DirectEarsRenderDelegate<ClientPlayerEntity, ModelPart> delegate = /*? if >=1.8 {*/ new DirectEarsRenderDelegate<>() /*?} else {*/ /*new com.unascribed.ears.common.legacy.PartiallyUnmanagedEarsRenderDelegate<>() *//*?}*/ {
+    private final DirectEarsRenderDelegate<ClientPlayerEntity, ModelPart> delegate =
+    //? if >=1.8 {
+    new DirectEarsRenderDelegate<>() {
+    //?} else if >=1.6 {
+    /*new com.unascribed.ears.common.legacy.PartiallyUnmanagedEarsRenderDelegate<>() {
+    *///?} else {
+    /*new com.unascribed.ears.common.legacy.UnmanagedEarsRenderDelegate<>() {
+    *///?}
         //? if >=1.8 {
         @Override
         protected void setUpRenderState() {
@@ -117,7 +129,7 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
                 GlStateManager.translatef(0, 0.2f, 0);
             }
             modelPart.translate(1/16f);
-            Box cuboid = modelPart.boxes.get(0);
+            Box cuboid = (Box) modelPart.boxes.get(0);
             GlStateManager.scalef(1/16f, 1/16f, 1/16f);
             GlStateManager.translatef(cuboid.minX, cuboid.maxY, cuboid.minZ);
         }
@@ -129,14 +141,29 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
 
         @Override
         protected EarsFeatures getEarsFeatures() {
+            //? if >=1.6 {
             Identifier skin = peer.getSkinTextureLocation();
-            Texture tex = Minecraft.getInstance().getTextureManager().get(skin);
+            net.minecraft.client.render.texture.Texture tex = Minecraft.getInstance().getTextureManager().get(skin);
+            //?} else {
+            /*String tex = peer.skin;
+            *///?}
             if (OrnitheEars.earsSkinFeatures.containsKey(tex)) {
                 EarsFeatures feat = OrnitheEars.earsSkinFeatures.get(tex);
-                EarsFeaturesStorage.INSTANCE.put(/*? if >=1.7 {*/ peer.getGameProfile().getName(), peer.getGameProfile().getId() /*?} else {*/ /*peer.getName(), null *//*?}*/, feat);
+                //? if >=1.7 {
+                String name = peer.getGameProfile().getName();
+                //?} else if >= 1.5 {
+                /*String name = peer.getName();
+                *///?} else {
+                /*String name = peer.name;
+                *///?}
+                EarsFeaturesStorage.INSTANCE.put(name, /*? if >=1.7 {*/ peer.getGameProfile().getId() /*?} else {*/ /*null *//*?}*/, feat);
+                //? if >=1.4 {
                 if (!peer.isInvisible()) {
                     return feat;
                 }
+                //?} else {
+                /*return feat;
+                *///?}
             }
             return EarsFeatures.DISABLED;
         }
@@ -164,9 +191,19 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
 
         @Override
         protected void doBindSkin() {
+            //? if >=1.6 {
             Minecraft.getInstance().getTextureManager().bind(peer.getSkinTextureLocation());
+            //?} else {
+            /*TextureManager manager = Minecraft.getInstance().textureManager;
+            int id = manager.bindHttpTexture(peer.skin, peer.getTexture());
+            if (id < 0) return;
+            GlStateManager.bindTexture(id);
+            //? if >=1.5
+            manager.clear();
+            *///?}
         }
 
+        //? if >=1.6 {
         @Override
         protected void doBindAux(EarsRenderDelegate.TexSource src, byte[] pngData) {
             if (pngData == null) {
@@ -196,6 +233,17 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
                 Minecraft.getInstance().getTextureManager().bind(id);
             }
         }
+        //?} else {
+        /*@Override
+        protected String getSkinUrl() {
+            return peer.skin;
+        }
+
+        @Override
+        protected int uploadImage(BufferedImage bufferedImage) {
+            return Minecraft.getInstance().textureManager.bind(bufferedImage);
+        }
+        *///?}
 
         //? if >=1.8 {
         @Override

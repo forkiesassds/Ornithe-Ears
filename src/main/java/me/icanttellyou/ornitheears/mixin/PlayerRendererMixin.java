@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.Shadow;
 //?} else {
 /*@Mixin(net.minecraft.client.render.entity.PlayerEntityRenderer.class)
 *///?}
-public abstract class PlayerRendererMixin extends LivingEntityRenderer<ClientPlayerEntity> {
+public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1.6 {*/<ClientPlayerEntity>/*?}*/ {
     //? if >=1.8 {
     public PlayerRendererMixin(net.minecraft.client.render.entity.EntityRenderDispatcher dispatcher, Model model, float shadowSize) {
         super(dispatcher, model, shadowSize);
@@ -88,8 +88,14 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<ClientPla
         com.unascribed.ears.legacy.LegacyHelper.ensureLookedUpAsynchronously(entity.getGameProfile().getId(), entity.getGameProfile().getName());
         boolean slim = com.unascribed.ears.legacy.LegacyHelper.isSlimArms(entity.getGameProfile().getId());
         //?} else {
-        /^com.unascribed.ears.legacy.LegacyHelper.ensureLookedUpAsynchronously(entity.getName());
-        boolean slim = com.unascribed.ears.legacy.LegacyHelper.isSlimArms(entity.getName());
+        /^//? if >= 1.5 {
+        String name = entity.getName();
+         //?} else {
+        /^¹String name = entity.name;
+        ¹^///?}
+
+        com.unascribed.ears.legacy.LegacyHelper.ensureLookedUpAsynchronously(name);
+        boolean slim = com.unascribed.ears.legacy.LegacyHelper.isSlimArms(name);
         ^///?}
 
         if (slim) {
@@ -100,19 +106,35 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<ClientPla
         }
     }
 
-    @Inject(method = "render(Lnet/minecraft/client/entity/living/player/ClientPlayerEntity;DDDFF)V", at = @At("HEAD"))
-    private void patchRender(ClientPlayerEntity clientPlayerEntity, double d2, double e, double f, float g, float h, CallbackInfo ci) {
-        ears$beforeRenderModel(clientPlayerEntity);
+    @Inject(
+            method =
+            //? if >=1.6 {
+            "render(Lnet/minecraft/client/entity/living/player/ClientPlayerEntity;DDDFF)V"
+            //?} else {
+            /^"render(Lnet/minecraft/entity/living/player/PlayerEntity;DDDFF)V"
+            ^///?}
+            , at = @At("HEAD")
+    )
+    private void patchRender(/^? if >=1.6 {^/ ClientPlayerEntity /^?} else {^/ /^PlayerEntity ^//^?}^/  playerEntity, double d2, double e, double f4, float g, float h, CallbackInfo ci) {
+        ears$beforeRenderModel(playerEntity);
     }
 
-    @Inject(method = "renderDecoration(Lnet/minecraft/client/entity/living/player/ClientPlayerEntity;F)V", at = @At("TAIL"))
-    private void patchRenderDecoration(ClientPlayerEntity clientPlayerEntity, float f2, CallbackInfo ci) {
-        ears$earsLayer.render(clientPlayerEntity, clientPlayerEntity.prevHandSwingAmount + (clientPlayerEntity.handSwingAmount - clientPlayerEntity.prevHandSwingAmount) * f2, f2);
+    @Inject(
+            method =
+            //? if >=1.6 {
+            "renderDecoration(Lnet/minecraft/client/entity/living/player/ClientPlayerEntity;F)V"
+            //?} else {
+            /^"renderDecoration(Lnet/minecraft/entity/living/player/PlayerEntity;F)V"
+            ^///?}
+            , at = @At("TAIL")
+    )
+    private void patchRenderDecoration(/^? if >=1.6 {^/ ClientPlayerEntity /^?} else {^/ /^PlayerEntity ^//^?}^/ playerEntity, float f2, CallbackInfo ci) {
+        ears$earsLayer.render((ClientPlayerEntity) playerEntity, playerEntity.prevHandSwingAmount + (playerEntity.handSwingAmount - playerEntity.prevHandSwingAmount) * f2, f2);
     }
 
     @Inject(method = "renderPlayerRightHandModel", at = @At("HEAD"))
-    private void patchRenderPlayerRightHandModelBeforeRender(PlayerEntity player, CallbackInfo ci) {
-        ears$beforeRenderModel(player);
+    private void patchRenderPlayerRightHandModelBeforeRender(/^? if >=1.4 {^/ PlayerEntity player,/^?}^/ CallbackInfo ci) {
+        ears$beforeRenderModel(/^? if >=1.4 {^/ player /^?} else {^/ /^net.minecraft.client.Minecraft.getInstance().player ^//^?}^/);
     }
     *///?}
 
@@ -124,9 +146,9 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<ClientPla
     //?}
 
     @Inject(method = "renderPlayerRightHandModel", at = @At("TAIL"))
-    private void patchRenderPlayerRightHandModel(/*? if >=1.8 {*/ ClientPlayerEntity /*?} else {*/ /*PlayerEntity *//*?}*/ player, CallbackInfo ci) {
+    private void patchRenderPlayerRightHandModel(/*? if >=1.4 {*/ /*? if >=1.8 {*/ ClientPlayerEntity /*?} else {*/ /*PlayerEntity *//*?}*/ player,/*?}*/ CallbackInfo ci) {
         //? if <1.8
         /*((me.icanttellyou.ornitheears.PlayerModel) handmodel).rightSleeve.render(0.0625F);*/
-        ears$earsLayer.renderRightArm((ClientPlayerEntity) player);
+        ears$earsLayer.renderRightArm((ClientPlayerEntity) /*? if >=1.4 {*/ player /*?} else {*/ /*net.minecraft.client.Minecraft.getInstance().player *//*?}*/);
     }
 }

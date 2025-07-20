@@ -81,6 +81,11 @@ stonecutter {
     }
 
     replacements.string {
+        direction = eval(current.version, "<1.6")
+        replace("ClientPlayerEntity", "LocalClientPlayerEntity")
+    }
+
+    replacements.string {
         direction = eval(current.version, "<1.8")
         replace("GlStateManager.bindTexture(", "GL11.glBindTexture(GL11.GL_TEXTURE_2D, ")
     }

@@ -19,12 +19,17 @@ public abstract class HeldItemRendererMixin {
         method = "renderHand",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/render/entity/PlayerEntityRenderer;renderPlayerRightHandModel(Lnet/minecraft/entity/living/player/PlayerEntity;)V"
+            target =
+                    //? if >=1.4 {
+                    "Lnet/minecraft/client/render/entity/PlayerEntityRenderer;renderPlayerRightHandModel(Lnet/minecraft/entity/living/player/PlayerEntity;)V"
+                    //?} else {
+                    /^"Lnet/minecraft/client/render/entity/PlayerEntityRenderer;renderPlayerRightHandModel()V"
+                    ^///?}
         )
     )
-    private void patchRenderHand(PlayerEntityRenderer instance, PlayerEntity player, Operation<Void> original) {
+    private void patchRenderHand(PlayerEntityRenderer instance, /^? if >=1.4 {^/ PlayerEntity player,/^?}^/ Operation<Void> original) {
         GL11.glDisable(GL11.GL_CULL_FACE);
-        original.call(instance, player);
+        original.call(instance /^? if >=1.4 {^/ , player/^?}^/);
         GL11.glEnable(GL11.GL_CULL_FACE);
     }
 }

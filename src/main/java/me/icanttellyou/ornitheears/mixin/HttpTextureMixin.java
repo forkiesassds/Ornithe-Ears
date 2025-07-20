@@ -1,3 +1,4 @@
+//? if >=1.6 {
 package me.icanttellyou.ornitheears.mixin;
 
 import com.unascribed.ears.common.EarsFeaturesParser;
@@ -68,3 +69,4 @@ public abstract class HttpTextureMixin {
         ));
     }
 }
+//?}

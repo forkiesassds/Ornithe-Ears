@@ -15,18 +15,35 @@ public class PlayerModel extends HumanoidModel {
     public ModelPart leftPants;
     public ModelPart rightPants;
     public ModelPart jacket;
-    private ModelPart cape;
-    private ModelPart ears;
     public boolean thinArms;
 
     public PlayerModel(float reduction, boolean thinArms) {
+        //? if >=1.4 {
         super(reduction, 0.0F, 64, 64);
-        this.thinArms = thinArms;
-        this.ears = new ModelPart(this, 24, 0);
-        this.ears.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1, reduction);
         this.cape = new ModelPart(this, 0, 0);
         this.cape.setTextureSize(64, 32);
         this.cape.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, reduction);
+        //?} else {
+        /^super(reduction, 0.0F);
+        this.textureWidth = 64;
+        this.textureHeight = 64;
+
+        this.head = new ModelPart(this, 0, 0);
+        this.head.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, reduction);
+        this.head.setPivot(0.0F, 0.0F, 0.0F);
+        this.hat = new ModelPart(this, 32, 0);
+        this.hat.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, reduction + 0.5F);
+        this.hat.setPivot(0.0F, 0.0F, 0.0F);
+        this.body = new ModelPart(this, 16, 16);
+        this.body.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, reduction);
+        this.body.setPivot(0.0F, 0.0F, 0.0F);
+        this.rightLeg = new ModelPart(this, 0, 16);
+        this.rightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, reduction);
+        this.rightLeg.setPivot(-1.9F, 12.0F, 0.0F);
+        this.deadmau5Ears = new ModelPart(this, 24, 0);
+        this.deadmau5Ears.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1, reduction);
+        ^///?}
+        this.thinArms = thinArms;
         if (thinArms) {
             this.leftArm = new ModelPart(this, 32, 48);
             this.leftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, reduction);
@@ -86,14 +103,14 @@ public class PlayerModel extends HumanoidModel {
         GL11.glPopMatrix();
     }
 
-    public void setAngles(float handSwing, float handSwingAmount, float age, float yaw, float pitch, float scale, Entity entity) {
-        super.setAngles(handSwing, handSwingAmount, age, yaw, pitch, scale, entity);
+    public void setAngles(float handSwing, float handSwingAmount, float age, float yaw, float pitch, float scale /^? if >=1.4 {^/, Entity entity /^?}^/) {
+        super.setAngles(handSwing, handSwingAmount, age, yaw, pitch, scale /^? if >=1.4 {^/, entity /^?}^/);
         copyRotation(this.leftLeg, this.leftPants);
         copyRotation(this.rightLeg, this.rightPants);
         copyRotation(this.leftArm, this.leftSleeve);
         copyRotation(this.rightArm, this.rightSleeve);
         copyRotation(this.body, this.jacket);
-        if (entity.isSneaking()) {
+        if (/^? if >=1.4 {^/ entity.isSneaking() /^?} else {^/ /^this.sneaking ^//^?}^/) {
             this.cape.pivotY = 2.0F;
         } else {
             this.cape.pivotY = 0.0F;
