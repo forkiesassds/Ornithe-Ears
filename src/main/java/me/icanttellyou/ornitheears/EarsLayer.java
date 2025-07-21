@@ -42,6 +42,8 @@ import java.io.IOException;
 import java.awt.image.BufferedImage;
 *///?}
 
+import java.util.List;
+
 @Environment(EnvType.CLIENT)
 public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.entity.layer.EntityRenderLayer<ClientPlayerEntity> /*?}*/ {
     private final LivingEntityRenderer/*? if >=1.6 {*/<ClientPlayerEntity>/*?}*/ render;
@@ -127,13 +129,20 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
                     .map(BodyPart.TORSO, model.body);
         }
 
+        @SuppressWarnings("rawtypes")
         @Override
         protected void doAnchorTo(BodyPart part, ModelPart modelPart) {
             if (peer.isSneaking() && permittedBodyPart == null) {
                 GlStateManager.translatef(0, 0.2f, 0);
             }
             modelPart.translate(1/16f);
-            Box cuboid = (Box) modelPart.boxes.get(0);
+            //? if >1.0.0 {
+            List boxes = modelPart.boxes;
+            //?} else {
+            /*List boxes = ((me.icanttellyou.ornitheears.mixin.ModelPartAccessor) modelPart).getBoxes();
+            *///?}
+
+            Box cuboid = (Box) boxes.get(0);
             GlStateManager.scalef(1/16f, 1/16f, 1/16f);
             GlStateManager.translatef(cuboid.minX, cuboid.maxY, cuboid.minZ);
         }
