@@ -39,8 +39,15 @@ public abstract class HttpTextureThreadMixin {
     public String patchGetUrl(@Coerce Object instance, Operation<String> original) {
         String url = original.call(instance);
 
-        if (url.startsWith("http://skins.minecraft.net/MinecraftSkins") && url.endsWith(".png")) {
-            String username = url.substring(42, url.length() - 4);
+        if (url.startsWith(
+                //? if >=1.3 {
+                "http://skins.minecraft.net/MinecraftSkins"
+                //?} else {
+                /^"http://s3.amazonaws.com/MinecraftSkins"
+                ^///?}
+        ) && url.endsWith(".png")) {
+            String username = url.substring(/^? >=1.3 {^/ 42 /^?} else {^/ /^39 ^//^?}^/, url.length() - 4);
+            System.out.println(username);
             return LegacyHelper.getSkinUrl(username);
         }
 

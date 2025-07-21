@@ -21,6 +21,9 @@ import net.minecraft.entity.living.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Shadow;
 *///?}
 
+//? if >=1.3 && <1.4
+/*import net.minecraft.client.Minecraft;*/
+
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 //? if >=1.8 {
 @Mixin(net.minecraft.client.render.entity.PlayerRenderer.class)
@@ -133,7 +136,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
 
     @Inject(method = "renderPlayerRightHandModel", at = @At("HEAD"))
     private void patchRenderPlayerRightHandModelBeforeRender(/^? if >=1.4 {^/ PlayerEntity player,/^?}^/ CallbackInfo ci) {
-        ears$beforeRenderModel(/^? if >=1.4 {^/ player /^?} else {^/ /^net.minecraft.client.Minecraft.getInstance().player ^//^?}^/);
+        ears$beforeRenderModel(/^? if >=1.4 {^/ player /^?} else {^/ /^Minecraft.getInstance().player ^//^?}^/);
     }
     *///?}
 
@@ -148,6 +151,6 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
     private void patchRenderPlayerRightHandModel(/*? if >=1.4 {*/ /*? if >=1.8 {*/ ClientPlayerEntity /*?} else {*/ /*PlayerEntity *//*?}*/ player,/*?}*/ CallbackInfo ci) {
         //? if <1.8
         /*((me.icanttellyou.ornitheears.PlayerModel) handmodel).rightSleeve.render(0.0625F);*/
-        ears$earsLayer.renderRightArm((ClientPlayerEntity) /*? if >=1.4 {*/ player /*?} else {*/ /*net.minecraft.client.Minecraft.getInstance().player *//*?}*/);
+        ears$earsLayer.renderRightArm((ClientPlayerEntity) /*? if >=1.4 {*/ player /*?} else {*/ /*Minecraft.getInstance().player *//*?}*/);
     }
 }

@@ -17,7 +17,11 @@ import com.unascribed.ears.common.render.EarsRenderDelegate.BodyPart;
 import com.unascribed.ears.common.util.Decider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//? if >=1.3 {
 import net.minecraft.client.Minecraft;
+//?} else {
+/*import me.icanttellyou.ornitheears.mixin.MinecraftAccessor;
+*///?}
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.model.Box;

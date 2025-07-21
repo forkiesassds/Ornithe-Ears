@@ -12,11 +12,14 @@ plugins {
     // id("me.modmuss50.mod-publish-plugin")
 }
 
-version = "${property("mod.version")}+${stonecutter.current.version}"
+val mc = if (hasProperty("deps.minecraft"))
+    property("deps.minecraft").toString() else stonecutter.current.version
+
+version = "${property("mod.version")}+${mc}"
 group = property("mod.group") as String
 base.archivesName = property("mod.id") as String
 
-val useClient = stonecutter.eval(stonecutter.current.version, "<=1.3-alpha.12.17.a")
+val useClient = stonecutter.eval(stonecutter.current.version, "<1.3")
 
 if (useClient) {
     loom {
@@ -48,7 +51,7 @@ repositories {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${stonecutter.current.version}")
+    minecraft("com.mojang:minecraft:${mc}")
     mappings(ploceus.featherMappings(property("deps.feather").toString()))
     if (hasProperty("deps.raven"))
         exceptions(ploceus.raven(property("deps.raven").toString()))
@@ -99,6 +102,16 @@ stonecutter {
     replacements.string {
         direction = eval(current.version, "<1.6")
         replace("ClientPlayerEntity", "LocalClientPlayerEntity")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.3")
+        replace("LocalClientPlayerEntity", "InputPlayerEntity")
+    }
+
+    replacements.string {
+        direction = eval(current.version, "<1.3")
+        replace("Minecraft.getInstance()", "MinecraftAccessor.getInstance()")
     }
 
     replacements.string {

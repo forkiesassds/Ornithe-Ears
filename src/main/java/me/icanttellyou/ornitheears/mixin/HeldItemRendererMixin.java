@@ -6,7 +6,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.render.HeldItemRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.entity.living.player.PlayerEntity;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +25,7 @@ public abstract class HeldItemRendererMixin {
                     ^///?}
         )
     )
-    private void patchRenderHand(PlayerEntityRenderer instance, /^? if >=1.4 {^/ PlayerEntity player,/^?}^/ Operation<Void> original) {
+    private void patchRenderHand(PlayerEntityRenderer instance, /^? if >=1.4 {^/ net.minecraft.entity.living.player.PlayerEntity player,/^?}^/ Operation<Void> original) {
         GL11.glDisable(GL11.GL_CULL_FACE);
         original.call(instance /^? if >=1.4 {^/ , player/^?}^/);
         GL11.glEnable(GL11.GL_CULL_FACE);
