@@ -101,12 +101,12 @@ stonecutter {
 
     replacements.string {
         direction = eval(current.version, "<1.6")
-        replace("ClientPlayerEntity", "LocalClientPlayerEntity")
+        replace("ClientPlayerEntity", "InputClientPlayerEntity")
     }
 
     replacements.string {
         direction = eval(current.version, "<1.3")
-        replace("LocalClientPlayerEntity", "InputPlayerEntity")
+        replace("InputClientPlayerEntity", "InputPlayerEntity")
     }
 
     replacements.string {
