@@ -99,14 +99,15 @@ stonecutter {
         replace("net.minecraft.resource.Identifier", "net.minecraft.client.resource.Identifier")
     }
 
-    replacements.string {
-        direction = eval(current.version, "<1.6")
-        replace("ClientPlayerEntity", "InputClientPlayerEntity")
+    replacements.regex {
+        direction = eval(current.version, ">=1.6")
+        replace("(.)InputClientPlayerEntity(.)", "$1ClientPlayerEntity$2")
+        reverse("(.)ClientPlayerEntity(.)", "$1InputClientPlayerEntity$2")
     }
 
     replacements.string {
         direction = eval(current.version, "<1.3")
-        replace("InputClientPlayerEntity", "InputPlayerEntity")
+        replace("ClientPlayerEntity", "InputPlayerEntity")
     }
 
     replacements.string {

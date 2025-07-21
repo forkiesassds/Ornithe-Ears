@@ -136,6 +136,9 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
                 GlStateManager.translatef(0, 0.2f, 0);
             }
             modelPart.translate(1/16f);
+            GlStateManager.scalef(1/16f, 1/16f, 1/16f);
+
+            //? if >1.0.0-beta.8 {
             //? if >1.0.0 {
             List boxes = modelPart.boxes;
             //?} else {
@@ -143,8 +146,8 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
             *///?}
 
             Box cuboid = (Box) boxes.get(0);
-            GlStateManager.scalef(1/16f, 1/16f, 1/16f);
             GlStateManager.translatef(cuboid.minX, cuboid.maxY, cuboid.minZ);
+            //?}
         }
 
         @Override

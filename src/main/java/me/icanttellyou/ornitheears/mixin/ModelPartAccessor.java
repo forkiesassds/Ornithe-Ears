@@ -1,4 +1,4 @@
-//? <1.3 {
+//? if >1.0.0-beta.8 && <1.3 {
 /*package me.icanttellyou.ornitheears.mixin;
 
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
