@@ -123,11 +123,7 @@ public class PlayerModel extends HumanoidModel {
         copyRotation(this.leftArm, this.leftSleeve);
         copyRotation(this.rightArm, this.rightSleeve);
         copyRotation(this.body, this.jacket);
-        if (/^? if >=1.4 {^/ entity.isSneaking() /^?} else {^/ /^this.sneaking ^//^?}^/) {
-            this.cape.pivotY = 2.0F;
-        } else {
-            this.cape.pivotY = 0.0F;
-        }
+
     }
 
     public static void copyRotation(ModelPart from, ModelPart to) {
