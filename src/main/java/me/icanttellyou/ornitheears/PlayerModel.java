@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.model.ModelPart;
 import net.minecraft.client.render.model.entity.HumanoidModel;
+//? if >1.0.0-beta.7.3
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
@@ -15,6 +16,7 @@ public class PlayerModel extends HumanoidModel {
     public ModelPart leftPants;
     public ModelPart rightPants;
     public ModelPart jacket;
+    public ModelPart ears;
     public boolean thinArms;
 
     //? if <1.0.0-beta.9 {
@@ -45,8 +47,8 @@ public class PlayerModel extends HumanoidModel {
         this.rightLeg = newModelPart(this, 0, 16);
         this.rightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, reduction);
         this.rightLeg.setPivot(-1.9F, 12.0F, 0.0F);
-        this.deadmau5Ears = newModelPart(this, 24, 0);
-        this.deadmau5Ears.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1, reduction);
+        this.ears = newModelPart(this, 24, 0);
+        this.ears.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1, reduction);
         ^///?}
         this.thinArms = thinArms;
         if (thinArms) {
@@ -135,6 +137,15 @@ public class PlayerModel extends HumanoidModel {
         to.pivotX = from.pivotX;
         to.pivotY = from.pivotY;
         to.pivotZ = from.pivotZ;
+    }
+
+    @Override
+    public void renderDeadmau5Ears(float scale) {
+        this.ears.rotationY = this.head.rotationY;
+        this.ears.rotationX = this.head.rotationX;
+        this.ears.pivotX = 0.0F;
+        this.ears.pivotY = 0.0F;
+        this.ears.render(scale);
     }
 
     public static ModelPart newModelPart(PlayerModel model, int textureU, int textureV) {
