@@ -14,6 +14,9 @@ public class OrnitheEars implements ClientModInitializer {
     //? if <1.9
     public static final com.unascribed.ears.common.util.EarsStorage.Key<Boolean> FORCE_TRANSLUCENT = new com.unascribed.ears.common.util.EarsStorage.Key<>(false);
 
+    //? if <1.3
+    /*public static net.minecraft.client.Minecraft MINECRAFT;*/
+
     @Override
     public void onInitializeClient() {}
 

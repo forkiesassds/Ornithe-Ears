@@ -2,7 +2,7 @@ package me.icanttellyou.ornitheears;
 
 //? if >=1.0.0-beta.9 {
 import com.mojang.blaze3d.platform.GLX;
-//?} else {
+//?} else if >1.0.0-beta.7.3 {
 /*import org.lwjgl.opengl.GL13;
 *///?}
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -21,11 +21,8 @@ import com.unascribed.ears.common.render.EarsRenderDelegate.BodyPart;
 import com.unascribed.ears.common.util.Decider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-//? if >=1.3 {
+//? if >=1.3
 import net.minecraft.client.Minecraft;
-//?} else {
-/*import me.icanttellyou.ornitheears.mixin.MinecraftAccessor;
-*///?}
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.model.ModelPart;
@@ -45,6 +42,7 @@ import java.io.IOException;
 import java.awt.image.BufferedImage;
 *///?}
 
+//? if >1.0.0-beta.7.3
 import java.util.List;
 
 @Environment(EnvType.CLIENT)

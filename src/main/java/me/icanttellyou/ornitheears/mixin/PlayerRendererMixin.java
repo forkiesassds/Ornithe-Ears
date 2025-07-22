@@ -21,8 +21,13 @@ import net.minecraft.entity.living.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Shadow;
 *///?}
 
-//? if >=1.3 && <1.4
-/*import net.minecraft.client.Minecraft;*/
+//? if <1.4 {
+/*//? if >=1.3 {
+import net.minecraft.client.Minecraft;
+//?} else {
+/^import me.icanttellyou.ornitheears.OrnitheEars;
+^///?}
+*///?}
 
 @MixinEnvironment(type = MixinEnvironment.Env.CLIENT)
 //? if >=1.8 {

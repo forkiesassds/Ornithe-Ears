@@ -112,7 +112,7 @@ stonecutter {
 
     replacements.string {
         direction = eval(current.version, "<1.3")
-        replace("Minecraft.getInstance()", "MinecraftAccessor.getInstance()")
+        replace("Minecraft.getInstance()", "OrnitheEars.MINECRAFT")
     }
 
     replacements.string {

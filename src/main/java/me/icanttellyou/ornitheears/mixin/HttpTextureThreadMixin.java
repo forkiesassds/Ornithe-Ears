@@ -47,7 +47,6 @@ public abstract class HttpTextureThreadMixin {
                 ^///?}
         ) && url.endsWith(".png")) {
             String username = url.substring(/^? >=1.3 {^/ 42 /^?} else {^/ /^39 ^//^?}^/, url.length() - 4);
-            System.out.println(username);
             return LegacyHelper.getSkinUrl(username);
         }
 
