@@ -1,6 +1,10 @@
 package me.icanttellyou.ornitheears;
 
+//? if >=1.0.0-beta.9 {
 import com.mojang.blaze3d.platform.GLX;
+//?} else {
+/*import org.lwjgl.opengl.GL13;
+*///?}
 import com.mojang.blaze3d.vertex.BufferBuilder;
 //? if >=1.8 {
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -24,7 +28,6 @@ import net.minecraft.client.Minecraft;
 *///?}
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.model.Box;
 import net.minecraft.client.render.model.ModelPart;
 import net.minecraft.client.render.model.entity.HumanoidModel;
 import net.minecraft.item.ArmorItem;
@@ -138,16 +141,19 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
             modelPart.translate(1/16f);
             GlStateManager.scalef(1/16f, 1/16f, 1/16f);
 
-            //? if >1.0.0-beta.8 {
+            //? if >=1.0.0-beta.9 {
             //? if >1.0.0 {
             List boxes = modelPart.boxes;
             //?} else {
             /*List boxes = ((me.icanttellyou.ornitheears.mixin.ModelPartAccessor) modelPart).getBoxes();
             *///?}
 
-            Box cuboid = (Box) boxes.get(0);
+            net.minecraft.client.render.model.Box cuboid = (net.minecraft.client.render.model.Box) boxes.get(0);
             GlStateManager.translatef(cuboid.minX, cuboid.maxY, cuboid.minZ);
-            //?}
+            //?} else {
+            /*net.minecraft.client.render.model.Vertex vert = ((me.icanttellyou.ornitheears.mixin.ModelPartAccessor) modelPart).getVertices()[3];
+            GlStateManager.translated(vert.pos.x, vert.pos.y, vert.pos.z);
+            *///?}
         }
 
         @Override
@@ -299,6 +305,8 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
             *///?}
         }
 
+        //FIXME: supposed to be >=1.0.0-beta.8, but stonecutter not happy with that
+        //? if >1.0.0-beta.7.3 {
         @Override
         public void setEmissive(boolean emissive) {
             super.setEmissive(emissive);
@@ -313,15 +321,24 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
             }
             GlStateManager.activeTexture(GLX.GL_TEXTURE0);
             //?} else {
-            /*GLX.activeTexture(GLX.GL_TEXTURE1);
+            /*//? if >=1.0.0-beta.9 {
+            GLX.activeTexture(GLX.GL_TEXTURE1);
+            //?} else {
+            /^GL13.glActiveTexture(GL13.GL_TEXTURE1);
+            ^///?}
             if (emissive) {
                GL11.glDisable(GL11.GL_TEXTURE_2D);
             } else {
                GL11.glEnable(GL11.GL_TEXTURE_2D);
             }
+            //? if >=1.0.0-beta.9 {
             GLX.activeTexture(GLX.GL_TEXTURE0);
+            //?} else {
+            /^GL13.glActiveTexture(GL13.GL_TEXTURE0);
+            ^///?}
             *///?}
         }
+        //?}
 
 
         @Override
@@ -349,7 +366,12 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
 
         @Override
         public boolean isFlying() {
+            //FIXME: supposed to be >=1.0.0-beta.8, but stonecutter not happy with that
+            //? if >1.0.0-beta.7.3 {
             return peer.abilities.flying;
+            //?} else {
+            /*return false;
+            *///?}
         }
 
         @Override
