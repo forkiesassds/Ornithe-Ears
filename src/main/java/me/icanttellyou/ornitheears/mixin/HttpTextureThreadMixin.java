@@ -15,6 +15,7 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
 
@@ -39,14 +40,9 @@ public abstract class HttpTextureThreadMixin {
     public String patchGetUrl(@Coerce Object instance, Operation<String> original) {
         String url = original.call(instance);
 
-        if (url.startsWith(
-                //? if >=1.3 {
-                "http://skins.minecraft.net/MinecraftSkins"
-                //?} else {
-                /^"http://s3.amazonaws.com/MinecraftSkins"
-                ^///?}
-        ) && url.endsWith(".png")) {
-            String username = url.substring(/^? >=1.3 {^/ 42 /^?} else {^/ /^39 ^//^?}^/, url.length() - 4);
+        int trim = ears$getLengthToTrim(url);
+        if (trim != -1 && url.endsWith(".png")) {
+            String username = url.substring(trim, url.length() - 4);
             return LegacyHelper.getSkinUrl(username);
         }
 
@@ -71,6 +67,17 @@ public abstract class HttpTextureThreadMixin {
                 EarsStorage.get(value, EarsStorage.Key.ALFALFA),
                 data -> new AWTEarsImage(ImageIO.read(new ByteArrayInputStream(data)))
         ));
+    }
+
+    @Unique
+    private static int ears$getLengthToTrim(String url) {
+        if (url == null) return 1;
+
+        if (url.startsWith("http://skins.minecraft.net/MinecraftSkins")) return 42;
+        if (url.startsWith("http://s3.amazonaws.com/MinecraftSkins")) return 39;
+        if (url.startsWith("http://www.minecraft.net/skin")) return 30;
+
+        return -1;
     }
 }
 *///?}
