@@ -52,14 +52,8 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
     //? if <1.8 {
     /*@Unique
     private final PlayerModel ears$slimModel = new PlayerModel(0.0F, true);
-    @Unique
-    private final PlayerModel ears$slimModel1 = new PlayerModel(1.0F, true);
-    @Unique
-    private final PlayerModel ears$slimModel2 = new PlayerModel(0.5F, true);
 
     @Shadow private HumanoidModel handmodel;
-    @Shadow private HumanoidModel model1;
-    @Shadow private HumanoidModel model2;
     *///?}
 
 
@@ -84,7 +78,14 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
 
 
     //? if <1.8 {
-    /*@WrapOperation(method = "<init>", at = @At(value = "NEW", target = "(F)Lnet/minecraft/client/render/model/entity/HumanoidModel;"))
+    /*@WrapOperation(
+        method = "<init>",
+        at = @At(
+            value = "NEW",
+            target = "(F)Lnet/minecraft/client/render/model/entity/HumanoidModel;",
+            ordinal = 0
+        )
+    )
     private static HumanoidModel replaceModels(float reduction, Operation<HumanoidModel> original) {
         return new me.icanttellyou.ornitheears.PlayerModel(reduction, false);
     }
@@ -107,8 +108,6 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
 
         if (slim) {
             this.model = ears$slimModel;
-            this.model1 = ears$slimModel1;
-            this.model2 = ears$slimModel2;
             this.handmodel = ears$slimModel;
         }
     }
