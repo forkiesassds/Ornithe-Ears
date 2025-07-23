@@ -10,8 +10,9 @@ public class SizeableTexModelPart extends ModelPart {
 	public float textureWidth;
 	public float textureHeight;
 
-	public SizeableTexModelPart(/^? if >=1.0.0-beta.8 {^/net.minecraft.client.render.model.Model model, /^?}^/ int u, int v) {
-		super(/^? if >=1.0.0-beta.8 {^/ model, /^?}^/ u, v);
+	//FIXME: change this to >=1.0.0-beta.8 after stonecutter is fixed
+	public SizeableTexModelPart(/^? if >1.0.0-beta.7.3 {^/net.minecraft.client.render.model.Model model, /^?}^/ int u, int v) {
+		super(/^? if >1.0.0-beta.7.3 {^/ model, /^?}^/ u, v);
 		textureWidth = 64.0F;
 		textureHeight = 32.0F;
 	}

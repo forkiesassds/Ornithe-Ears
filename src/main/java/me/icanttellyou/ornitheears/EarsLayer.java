@@ -2,7 +2,7 @@ package me.icanttellyou.ornitheears;
 
 //? if >=1.0.0-beta.9 {
 import com.mojang.blaze3d.platform.GLX;
-//?} else if >=1.0.0-beta.8 {
+//?} else if >1.0.0-beta.7.3 {
 /*import org.lwjgl.opengl.GL13;
 *///?}
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -42,7 +42,7 @@ import java.io.IOException;
 import java.awt.image.BufferedImage;
 *///?}
 
-//? if >=1.0.0-beta.8
+//? if >1.0.0-beta.7.3
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -303,7 +303,8 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
             *///?}
         }
 
-        //? if >=1.0.0-beta.8 {
+        //FIXME: supposed to be >=1.0.0-beta.8, but stonecutter not happy with that
+        //? if >1.0.0-beta.7.3 {
         @Override
         public void setEmissive(boolean emissive) {
             super.setEmissive(emissive);
@@ -363,7 +364,8 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
 
         @Override
         public boolean isFlying() {
-            //? if >=1.0.0-beta.8 {
+            //FIXME: supposed to be >=1.0.0-beta.8, but stonecutter not happy with that
+            //? if >1.0.0-beta.7.3 {
             return peer.abilities.flying;
             //?} else {
             /*return false;
