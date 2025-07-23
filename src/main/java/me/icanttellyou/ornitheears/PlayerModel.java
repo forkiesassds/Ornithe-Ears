@@ -5,7 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.model.ModelPart;
 import net.minecraft.client.render.model.entity.HumanoidModel;
-//? if >1.0.0-beta.7.3
+//? if >=1.0.0-beta.8
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
@@ -90,10 +90,9 @@ public class PlayerModel extends HumanoidModel {
         this.jacket.setPivot(0.0F, 0.0F, 0.0F);
     }
 
-    //FIXME: change this to >=1.0.0-beta.8 after stonecutter is fixed
     @Override
-    public void render(/^? if >1.0.0-beta.7.3 {^/ Entity entity,/^?}^/ float handSwing, float handSwingAmount, float age, float yaw, float pitch, float scale) {
-        super.render(/^? if >1.0.0-beta.7.3 {^/ entity, /^?}^/ handSwing, handSwingAmount, age, yaw, pitch, scale);
+    public void render(/^? if >=1.0.0-beta.8 {^/ Entity entity,/^?}^/ float handSwing, float handSwingAmount, float age, float yaw, float pitch, float scale) {
+        super.render(/^? if >=1.0.0-beta.8 {^/ entity, /^?}^/ handSwing, handSwingAmount, age, yaw, pitch, scale);
         GL11.glPushMatrix();
         //? if >=1.0.0-beta.9 {
         if (this.isBaby) {
@@ -102,7 +101,7 @@ public class PlayerModel extends HumanoidModel {
             GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);
         } else
         //?}
-            if (/^? if >1.0.0-beta.7.3 {^/ entity.isSneaking()/^?} else {^/ /^this.sneaking ^//^?}^/) {
+            if (/^? if >=1.0.0-beta.8 {^/ entity.isSneaking()/^?} else {^/ /^this.sneaking ^//^?}^/) {
                 GlStateManager.translatef(0.0F, 0.2F, 0.0F);
             }
 
@@ -148,8 +147,8 @@ public class PlayerModel extends HumanoidModel {
         //? if >=1.0.0-beta.9 {
         return new ModelPart(model, textureU, textureV);
         //?} else {
-        /^//FIXME: change this to >=1.0.0-beta.8 after stonecutter is fixed
-        SizeableTexModelPart modelPart = new SizeableTexModelPart(/^¹? if >1.0.0-beta.7.3 {¹^/ model, /^¹?}¹^/ textureU, textureV);
+        
+        /^SizeableTexModelPart modelPart = new SizeableTexModelPart(/^¹? if >=1.0.0-beta.8 {¹^/ model, /^¹?}¹^/ textureU, textureV);
         modelPart.setTextureSize(model.textureWidth, model.textureHeight);
         return modelPart;
         ^///?}
