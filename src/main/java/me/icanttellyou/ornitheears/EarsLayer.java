@@ -133,9 +133,11 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
         @SuppressWarnings("rawtypes")
         @Override
         protected void doAnchorTo(BodyPart part, ModelPart modelPart) {
+            //? if >=1.8 {
             if (peer.isSneaking() && permittedBodyPart == null) {
                 GlStateManager.translatef(0, 0.2f, 0);
             }
+            //?}
             modelPart.translate(1/16f);
             GlStateManager.scalef(1/16f, 1/16f, 1/16f);
 

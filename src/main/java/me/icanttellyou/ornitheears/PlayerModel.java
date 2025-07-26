@@ -99,11 +99,8 @@ public class PlayerModel extends HumanoidModel {
             float f = 2.0F;
             GlStateManager.scalef(1.0F / f, 1.0F / f, 1.0F / f);
             GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);
-        } else
+        }
         //?}
-            if (/^? if >=1.0.0-beta.8 {^/ entity.isSneaking()/^?} else {^/ /^this.sneaking ^//^?}^/) {
-                GlStateManager.translatef(0.0F, 0.2F, 0.0F);
-            }
 
         this.leftPants.render(scale);
         this.rightPants.render(scale);
@@ -117,6 +114,15 @@ public class PlayerModel extends HumanoidModel {
     @Override
     public void setAngles(float handSwing, float handSwingAmount, float age, float yaw, float pitch, float scale /^? if >=1.4 {^/, Entity entity /^?}^/) {
         super.setAngles(handSwing, handSwingAmount, age, yaw, pitch, scale /^? if >=1.4 {^/, entity /^?}^/);
+        //? if <1.5 {
+        /^if (this.sneaking) {
+            this.hat.pivotY = 1.0F;
+        } else {
+            this.rightLeg.pivotZ = 0.1F;
+            this.leftLeg.pivotZ = 0.1F;
+            this.hat.pivotY = 0.0F;
+        }
+        ^///?}
         copyRotation(this.leftLeg, this.leftPants);
         copyRotation(this.rightLeg, this.rightPants);
         copyRotation(this.leftArm, this.leftSleeve);
