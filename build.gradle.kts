@@ -8,7 +8,6 @@ plugins {
     kotlin("jvm") version "2.2.0"
     id("com.google.devtools.ksp") version "2.2.0-2.0.2"
     id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.12"
-    id("com.gradleup.shadow") version "9.0.0-rc1"
     // id("me.modmuss50.mod-publish-plugin")
 }
 
@@ -64,11 +63,11 @@ dependencies {
 
     if (hasProperty("deps.ears.target")) {
         property("deps.ears.target").toString().split(",").forEach {
-            implementation("com.unascribed:ears-common:${property("deps.ears")}:${it}")
+            include(implementation("com.unascribed:ears-common:${property("deps.ears")}:${it}") as Any)
         }
     } else {
-        implementation("com.unascribed:ears-common:${property("deps.ears")}")
-        implementation("com.unascribed:ears-api:${property("deps.ears")}")
+        include(implementation("com.unascribed:ears-common:${property("deps.ears")}") as Any)
+        include(implementation("com.unascribed:ears-api:${property("deps.ears")}") as Any)
     }
 
     ploceus.dependOsl(property("deps.osl").toString(),
@@ -183,15 +182,8 @@ tasks {
     }
 
     var outDir = rootProject.layout.buildDirectory.dir("libs")
-    shadowJar {
-        dependencies {
-            exclude { !it.allModuleArtifacts.any() { p -> p.name.startsWith("ears-") } }
-        }
-    }
 
     remapJar {
-        input.set(shadowJar.get().archiveFile)
-        dependsOn(shadowJar)
         destinationDirectory = outDir
     }
 
