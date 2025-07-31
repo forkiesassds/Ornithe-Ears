@@ -5,6 +5,7 @@ import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.icanttellyou.ornitheears.EarsLayer;
 //? if >=1.6
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.model.Model;
 //? if <1.9
@@ -19,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import me.icanttellyou.ornitheears.PlayerModel;
-import net.minecraft.entity.living.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Shadow;
 *///?} else if <1.9 {
 import net.minecraft.client.render.model.entity.PlayerModel;
@@ -149,7 +149,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
 
     //? if <1.9 {
     @Unique
-    private void ears$beforeRenderArm() {
+    private void ears$beforeRenderArm(/*? if >=1.4 && <1.8 {*/ /*PlayerEntity player *//*?}*/) {
         //? if >=1.8 {
         HumanoidModel model = this.getModel();
         //?} else {
@@ -186,7 +186,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
     //? if <1.9 {
     @Inject(method = "renderPlayerRightHandModel", at = @At("HEAD"))
     private void patchRenderPlayerRightHandModelBeforeRender(/*? if >=1.4 {*/ /*? if >=1.8 {*/ ClientPlayerEntity /*?} else {*/ /*PlayerEntity *//*?}*/ player,/*?}*/ CallbackInfo ci) {
-        ears$beforeRenderArm();
+        ears$beforeRenderArm(/*? if >=1.4 && <1.8 {*/ /*player *//*?}*/);
     }
     //?}
 }
