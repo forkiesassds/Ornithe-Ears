@@ -3,6 +3,7 @@ package me.icanttellyou.ornitheears.mixin;
 import com.unascribed.ears.common.debug.EarsLog;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import me.icanttellyou.ornitheears.EarsLayer;
+//? if >=1.6
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.model.Model;
@@ -135,7 +136,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
             , at = @At("TAIL")
     )
     private void patchRenderDecoration(/^? if >=1.6 {^/ ClientPlayerEntity /^?} else {^/ /^PlayerEntity ^//^?}^/ playerEntity, float f2, CallbackInfo ci) {
-        ears$earsLayer.render((ClientPlayerEntity) playerEntity, playerEntity.prevHandSwingAmount + (playerEntity.handSwingAmount - playerEntity.prevHandSwingAmount) * f2, f2);
+        ears$earsLayer.render(playerEntity, playerEntity.prevHandSwingAmount + (playerEntity.handSwingAmount - playerEntity.prevHandSwingAmount) * f2, f2);
     }
 
     @Inject(method = "renderPlayerRightHandModel", at = @At("HEAD"))
@@ -155,6 +156,6 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
     private void patchRenderPlayerRightHandModel(/*? if >=1.4 {*/ /*? if >=1.8 {*/ ClientPlayerEntity /*?} else {*/ /*PlayerEntity *//*?}*/ player,/*?}*/ CallbackInfo ci) {
         //? if <1.8
         /*((me.icanttellyou.ornitheears.PlayerModel) handmodel).rightSleeve.render(0.0625F);*/
-        ears$earsLayer.renderRightArm((ClientPlayerEntity) /*? if >=1.4 {*/ player /*?} else {*/ /*Minecraft.getInstance().player *//*?}*/);
+        ears$earsLayer.renderRightArm(/*? >=1.6 && <1.8 {*//*(ClientPlayerEntity)*//*?}*/ /*? if >=1.4 {*/ player /*?} else {*/ /*Minecraft.getInstance().player *//*?}*/);
     }
 }

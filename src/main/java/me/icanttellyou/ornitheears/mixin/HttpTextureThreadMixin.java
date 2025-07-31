@@ -1,6 +1,7 @@
 //? if <1.6 {
 /*package me.icanttellyou.ornitheears.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.unascribed.ears.common.EarsFeaturesParser;
@@ -28,8 +29,7 @@ import java.io.ByteArrayInputStream;
 public abstract class HttpTextureThreadMixin {
     @Shadow @Final String f_4140703;
 
-    @SuppressWarnings("InvalidInjectorMethodSignature")
-    @WrapOperation(
+    @ModifyExpressionValue(
         method = "run",
         at = @At(
             value = "FIELD",
@@ -37,9 +37,7 @@ public abstract class HttpTextureThreadMixin {
             opcode = Opcodes.GETFIELD
         )
     )
-    public String patchGetUrl(@Coerce Object instance, Operation<String> original) {
-        String url = original.call(instance);
-
+    public String patchGetUrl(String url) {
         int trim = ears$getLengthToTrim(url);
         if (trim != -1 && url.endsWith(".png")) {
             String username = url.substring(trim, url.length() - 4);

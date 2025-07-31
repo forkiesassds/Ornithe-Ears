@@ -23,7 +23,11 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 //? if >=1.3
 import net.minecraft.client.Minecraft;
+//? if >=1.6 {
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
+//?} else {
+/*import net.minecraft.entity.living.player.PlayerEntity;
+*///?}
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.model.ModelPart;
 import net.minecraft.client.render.model.entity.HumanoidModel;
@@ -61,7 +65,7 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
                               float tickDelta, float age, float headYaw, float headPitch, float scale) {
         EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "render({}, {}, {}, {}, {}, {}, {}, {}, {})", entity, limbAngle, limbDistance, tickDelta, age, headYaw, headPitch, scale);
     //?} else {
-    /*public void render(ClientPlayerEntity entity, float limbDistance, float tickDelta) {
+    /*public void render(/^? >=1.6 {^/ ClientPlayerEntity /^?} else {^/ /^PlayerEntity ^//^?}^/ entity, float limbDistance, float tickDelta) {
         EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "render({}, {}, {})", entity, limbDistance, tickDelta);
     *///?}
         this.tickDelta = tickDelta;
@@ -69,14 +73,14 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
     }
 
     //? if >=1.8 {
-    public void renderLeftArm(ClientPlayerEntity entity) {
+    public void renderLeftArm(/*? >=1.6 {*/ ClientPlayerEntity /*?} else {*/ /*PlayerEntity *//*?}*/ entity) {
         EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "renderLeftArm({})", entity);
         this.tickDelta = 0;
         delegate.render(entity, BodyPart.LEFT_ARM);
     }
     //?}
 
-    public void renderRightArm(ClientPlayerEntity entity) {
+    public void renderRightArm(/*? >=1.6 {*/ ClientPlayerEntity /*?} else {*/ /*PlayerEntity *//*?}*/ entity) {
         EarsLog.debug(EarsLog.Tag.PLATFORM_RENDERER, "renderRightArm({})", entity);
         this.tickDelta = 0;
         delegate.render(entity, BodyPart.RIGHT_ARM);
@@ -89,7 +93,7 @@ public class EarsLayer /*? if >=1.8 {*/ implements net.minecraft.client.render.e
     }
     //?}
 
-    private final DirectEarsRenderDelegate<ClientPlayerEntity, ModelPart> delegate =
+    private final DirectEarsRenderDelegate</*? >=1.6 {*/ ClientPlayerEntity /*?} else {*/ /*PlayerEntity *//*?}*/, ModelPart> delegate =
     //? if >=1.8 {
     new DirectEarsRenderDelegate<>() {
     //?} else if >=1.6 {
