@@ -7,6 +7,8 @@ import me.icanttellyou.ornitheears.EarsLayer;
 import net.minecraft.client.entity.living.player.ClientPlayerEntity;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.model.Model;
+//? if <1.9
+import net.minecraft.client.render.model.entity.HumanoidModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,10 +19,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import me.icanttellyou.ornitheears.PlayerModel;
-import net.minecraft.client.render.model.entity.HumanoidModel;
 import net.minecraft.entity.living.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Shadow;
-*///?}
+*///?} else if <1.9 {
+import net.minecraft.client.render.model.entity.PlayerModel;
+import org.spongepowered.asm.mixin.Shadow;
+//?}
 
 //? if <1.4 {
 /*//? if >=1.3 {
@@ -38,6 +42,9 @@ import net.minecraft.client.Minecraft;
 *///?}
 public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1.6 {*/<ClientPlayerEntity>/*?}*/ {
     //? if >=1.8 {
+    //? if <1.9
+    @Shadow public abstract PlayerModel getModel();
+
     public PlayerRendererMixin(net.minecraft.client.render.entity.EntityRenderDispatcher dispatcher, Model model, float shadowSize) {
         super(dispatcher, model, shadowSize);
     }
@@ -138,18 +145,35 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
     private void patchRenderDecoration(/^? if >=1.6 {^/ ClientPlayerEntity /^?} else {^/ /^PlayerEntity ^//^?}^/ playerEntity, float f2, CallbackInfo ci) {
         ears$earsLayer.render(playerEntity, playerEntity.prevHandSwingAmount + (playerEntity.handSwingAmount - playerEntity.prevHandSwingAmount) * f2, f2);
     }
-
-    @Inject(method = "renderPlayerRightHandModel", at = @At("HEAD"))
-    private void patchRenderPlayerRightHandModelBeforeRender(/^? if >=1.4 {^/ PlayerEntity player,/^?}^/ CallbackInfo ci) {
-        ears$beforeRenderModel(/^? if >=1.4 {^/ player /^?} else {^/ /^Minecraft.getInstance().player ^//^?}^/);
-    }
     *///?}
+
+    //? if <1.9 {
+    @Unique
+    private void ears$beforeRenderArm() {
+        //? if >=1.8 {
+        HumanoidModel model = this.getModel();
+        //?} else {
+        /*HumanoidModel model = this.handmodel;
+        ears$beforeRenderModel(/^? if >=1.4 {^/ player /^?} else {^/ /^Minecraft.getInstance().player ^//^?}^/);
+        *///?}
+        //? if <1.8
+        /*model.sneaking = false;*/
+        model.hasVehicle = false;
+    }
+    //?}
 
     //? if >=1.8 {
     @Inject(method = "renderPlayerLeftHandModel", at = @At("TAIL"))
     private void patchRenderPlayerLeftHandModel(ClientPlayerEntity player, CallbackInfo ci) {
         ears$earsLayer.renderLeftArm(player);
     }
+
+    //? if <1.9 {
+    @Inject(method = "renderPlayerLeftHandModel", at = @At("HEAD"))
+    private void patchRenderPlayerLeftHandModelBeforeRender(ClientPlayerEntity player, CallbackInfo ci) {
+        ears$beforeRenderArm();
+    }
+    //?}
     //?}
 
     @Inject(method = "renderPlayerRightHandModel", at = @At("TAIL"))
@@ -158,4 +182,11 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer/*? if >=1
         /*((me.icanttellyou.ornitheears.PlayerModel) handmodel).rightSleeve.render(0.0625F);*/
         ears$earsLayer.renderRightArm(/*? >=1.6 && <1.8 {*//*(ClientPlayerEntity)*//*?}*/ /*? if >=1.4 {*/ player /*?} else {*/ /*Minecraft.getInstance().player *//*?}*/);
     }
+
+    //? if <1.9 {
+    @Inject(method = "renderPlayerRightHandModel", at = @At("HEAD"))
+    private void patchRenderPlayerRightHandModelBeforeRender(/*? if >=1.4 {*/ /*? if >=1.8 {*/ ClientPlayerEntity /*?} else {*/ /*PlayerEntity *//*?}*/ player,/*?}*/ CallbackInfo ci) {
+        ears$beforeRenderArm();
+    }
+    //?}
 }
